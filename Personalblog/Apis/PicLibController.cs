@@ -15,12 +15,14 @@ namespace Personalblog.Apis
         private readonly PiCLibService _service;
         private readonly IConfiguration _configuration;
         private readonly QiniuService _qiniuService;
+        public static string FontFamily = "Arial";
         public PicLibController(PiCLibService service,IConfiguration configuration,
             QiniuService qiniuService)
         {
             _service = service;
             _configuration = configuration;
             _qiniuService = qiniuService;
+            FontFamily = _configuration.GetValue<string>("FontFamily");
         }
         private static async Task<IActionResult> GenerateImageResponse(Image image, IImageFormat format)
         {
@@ -29,7 +31,7 @@ namespace Personalblog.Apis
             {
                 //windows字体 Arial
                 //liunx字体 DejaVu Sans
-                var font = SystemFonts.CreateFont("Arial", 50);
+                var font = SystemFonts.CreateFont(FontFamily, 50);
 
                 var location = new PointF(image.Width - 250, image.Height - 100);
                 image.Mutate(ctx => ctx.DrawText("ZY blog", font, new Rgba32(255, 255, 255, 128), location));

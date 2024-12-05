@@ -184,7 +184,10 @@ builder.Services.AddHangfireServer();
 //     //内部异常处理
 //     //options.OnInternalError = e => MyExceptionLogger(e);
 // }).AddEntityFramework();
-
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.Limits.MaxRequestBodySize = 104857600; // 设置为 100MB
+});
 
 var app = builder.Build();
 

@@ -373,6 +373,8 @@ Personalblog/wwwroot/www.yalijuda.com_wallpaper_hoy2Y9k4lp.mp4
 Personalblog/wwwroot/www.yalijuda.com_wallpaper1_Xc52_pGVj3.mp4
 *.db
 *.mp4
+Personalblog/app.db-shm
+Personalblog/app.db-wal
 Personalblog/wwwroot/media/*
 
 Personalblog/wwwroot/media/blog/2451f7b51ce18fe/微信截图_20230705185107.png

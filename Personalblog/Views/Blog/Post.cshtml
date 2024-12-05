@@ -1,0 +1,82 @@
+﻿@using Personalblog.Model.ViewModels;
+@using PersonalblogServices.Articels.Dto
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Newtonsoft.Json
+@using Personalblog.Model.Entitys
+@model PostViewModel
+
+
+@{
+    ViewData["Title"] = $"{Model.Title}";
+}
+
+@section head
+{
+    <link href="https://cdn.bootcdn.net/ajax/libs/element-plus/2.3.3/index.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/editormd.preview.css">
+}
+
+<style>
+img{
+max-width:100%; height:auto;
+}
+</style>
+
+@await Html.PartialAsync("Widgets/BackToTop", new BackToTopViewModel { IsShowText = false })
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3">
+            <div id="sidebar" class="p-3 sticky-lg-top">
+                @* <h5>Table of Contents</h5> *@
+                <div class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
+                    <span class="bi me-2">
+                        <i class="fa-solid fa-rectangle-list fa-2x"></i>
+                    </span>
+                    <span class="fs-5 fw-semibold">文章目录</span>
+                </div>
+
+                <div id="post-toc-container" style="z-index:0">
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9" id="goTop">
+            <partial name="Widegets/PostHeader" model="Model"/>
+
+            <div id="post-markdown-content" class="post-content">
+                <textarea id="append-test" style="display:none;">@Model.Content</textarea>
+            </div>
+            <partial name="Widegets/PostBottom"/>
+
+            <partial name="Widegets/Comment" model="Model"/>
+        </div>
+    </div>
+</div>
+
+@section bottom
+{
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/element-plus/2.3.3/index.full.min.js"></script>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.3.6/axios.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/dayjs/1.11.7/dayjs.min.js"></script>
+
+    <script src="~/js/comment.js"></script>
+    <script src="~/js/bootstrap-treeview.js"></script>
+
+    <script src="~/editormd/marked.min.js"></script>
+    <script src="~/editormd/prettify.min.js"></script>
+
+    <script src="~/editormd/raphael.min.js"></script>
+    <script src="~/editormd/underscore.min.js"></script>
+
+    <script src="~/editormd/sequence-diagram.min.js"></script>
+    <script src="~/editormd/flowchart.min.js"></script>
+    <script src="~/editormd/jquery.flowchart.min.js"></script>
+
+
+    <script src="~/editormd/editormd.js"></script>
+    <script src="~/js/blog.post.js"></script>
+
+}

@@ -1,0 +1,1 @@
+﻿$(function(){if(document.getElementById("post-markdown-content"))editormd.markdownToHTML("post-markdown-content",{htmlDecode:!0,tocm:!0,emoji:!0,taskList:!0,tex:!0,flowChart:!0,sequenceDiagram:!0})});

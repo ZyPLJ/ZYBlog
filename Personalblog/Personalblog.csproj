@@ -72,7 +72,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Personalblog.Contrib\Personalblog.Contrib.csproj" />
     <ProjectReference Include="..\Personalblog.Migrate\Personalblog.Migrate.csproj" />
     <ProjectReference Include="..\Personalblog.Model\Personalblog.Model.csproj" />
     <ProjectReference Include="..\PersonalblogServices\PersonalblogServices.csproj" />

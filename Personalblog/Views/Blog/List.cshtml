@@ -6,6 +6,9 @@
 
 @{
     ViewData["Title"] = "文章列表";
+    string ConditionActive(Func<bool> condition) {
+        return condition() ? "active" : "";
+    }
 }
 
 @section head
@@ -15,13 +18,64 @@
 
 @{
     <div class="container px-4 py-3">
-        <h2 class="d-flex w-100 justify-content-between pb-2 mb-3 border-bottom">
-            <div>Blog / @Model.CurrentCategory.Name</div>
-            @if (Model.Posts.Count != 0)
-            {
-                <div>@Model.Posts.TotalItemCount.ToString() Posts</div>         
-            }
-        </h2>
+        <div class="d-flex w-100 justify-content-between pb-2 mb-3 border-bottom">
+            <div>
+                <h2>Blog / @Model.CurrentCategory.Name</h2>
+                @if (Model.Posts.Count != 0)
+                {
+                    <span class="small">@Model.Posts.TotalItemCount.ToString() Posts</span>
+                }
+            </div>
+            <div>
+                <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                    <a class="btn btn-outline-primary @ConditionActive(() => Model.SortType == "desc")" asp-controller="Blog" asp-action="List"
+                       asp-route-categoryId="@Model.CurrentCategoryId"
+                       asp-route-sortBy="@Model.SortBy"
+                       asp-route-sortType="desc">
+                        <i class="fa-solid fa-down-long"></i>
+                    </a>
+
+                    <a class="btn btn-outline-primary @ConditionActive(() => Model.SortType == "asc")" asp-controller="Blog" asp-action="List"
+                       asp-route-categoryId="@Model.CurrentCategoryId"
+                       asp-route-sortBy="@Model.SortBy"
+                       asp-route-sortType="asc">
+                        <i class="fa-solid fa-up-long"></i>
+                    </a>
+
+                    <div class="btn-group" role="group">
+                        <button id="btnGroupDrop1" type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            排序
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                            <li>
+                                <a class="dropdown-item" asp-controller="Blog" asp-action="List"
+                                   asp-route-categoryId="@Model.CurrentCategoryId"
+                                   asp-route-sortType="@Model.SortType"
+                                   asp-route-sortBy="Title">
+                                    文章标题
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-controller="Blog" asp-action="List"
+                                   asp-route-categoryId="@Model.CurrentCategoryId"
+                                   asp-route-sortType="@Model.SortType"
+                                   asp-route-sortBy="CreationTime">
+                                    发表时间
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-controller="Blog" asp-action="List"
+                                   asp-route-categoryId="@Model.CurrentCategoryId"
+                                   asp-route-sortType="@Model.SortType"
+                                   asp-route-sortBy="LastUpdateTime">
+                                    更新时间
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <!--这是文章列表-->
             <div class="col-lg-3 mb-3 treeview" id="categories">
@@ -34,7 +88,7 @@
                 }
                 @foreach (var post in Model.Posts)
                 {
-                    <partial name="BlogListArtice" model="post" />
+                    <partial name="Widegets/BlogListArticeNew" model="post" />
                 }
             </div>
         </div>

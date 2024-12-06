@@ -7,6 +7,8 @@ namespace Personalblog.Model.ViewModels
 {
     public class BlogListViewModel
     {
+        public string SortType { get; set; }
+        public string SortBy { get; set; }
         public Category CurrentCategory { get; set; }
         public int CurrentCategoryId { get; set; }
         public IPagedList<Post> Posts { get; set; }

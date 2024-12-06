@@ -31,26 +31,20 @@ namespace Personalblog.Apis
             {
                 //windows字体 Arial
                 //liunx字体 DejaVu Sans
-                var font = SystemFonts.CreateFont(FontFamily, 50);
-
-                var location = new PointF(image.Width - 250, image.Height - 100);
+                float fontSize = image.Width / 15f; // 根据实际需要调整比例
+                var font = SystemFonts.CreateFont(FontFamily, fontSize);
+                var textSize = TextMeasurer.Measure("ZY blog", new TextOptions(font));
+                // 计算水印显示位置，在图片右下角
+                var location = new PointF(
+                    image.Width - textSize.Width - 10, // 10 为右边距
+                    image.Height - textSize.Height - 10 // 10 为下边距
+                );
                 image.Mutate(ctx => ctx.DrawText("ZY blog", font, new Rgba32(255, 255, 255, 128), location));
-
-                #region 水印图像
-                // 创建水印图像
-                // var watermarkImage = new Image<Rgba32>(image.Width, image.Height);
-                // watermarkImage.Mutate(x => x.BackgroundColor(new Rgba32(0, 0, 0, 0)));
-                // var font = SystemFonts.CreateFont("Arial", 50, FontStyle.Bold);
-                // var location = new PointF(watermarkImage.Width - 250, watermarkImage.Height - 100);
-                // watermarkImage.Mutate(x => x.DrawText("ZY blog", font, new Rgba32(255, 255, 255, 128), location));
-
-                // 将水印图像与原始图像叠加
-                // image.Mutate(x => x.DrawImage(watermarkImage, 1f));
-                #endregion
+                
                 await image.SaveAsync(stream, encoder);
                 try
                 {
-                    return new FileContentResult(stream.GetBuffer(), "image/jpeg");
+                    return new FileContentResult(stream.ToArray(), "image/jpeg");
                 }
                 finally
                 {

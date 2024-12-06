@@ -62,14 +62,22 @@ namespace PersonalblogServices.Articels
 
         public IPagedList<Post> GetPagedList(QueryParameters param)
         {
+            var querySet = _myDbContext.posts.AsQueryable();
+            // 排序
+            if (!string.IsNullOrWhiteSpace(param.SortBy)) {
+                // 是否升序
+                var isAscending = param.SortBy.StartsWith("-");
+                var orderByProperty = param.SortBy.Trim('-');
+
+                // 排序
+                querySet = querySet.OrderBy(orderByProperty, isAscending);
+            }
             if (param.CategoryId != 0)
             {
-                return _myDbContext.posts.Where(p => p.CategoryId == param.CategoryId).ToList().ToPagedList(param.Page, param.PageSize);
+                return querySet.Where(p => p.CategoryId == param.CategoryId).ToList().ToPagedList(param.Page, param.PageSize);
             }
-            else
-            {
-                return _myDbContext.posts.ToList().ToPagedList(param.Page, param.PageSize);
-            }
+
+            return querySet.ToList().ToPagedList(param.Page, param.PageSize);
         }
 
         public List<Post> GetPhotos()

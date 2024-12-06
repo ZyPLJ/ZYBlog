@@ -48,7 +48,8 @@ namespace Personalblog.Controllers
         /// <param name="page">当前页码</param>
         /// <param name="pageSize">页面最大展示数据的数量</param>
         /// <returns></returns>
-        public async Task<IActionResult> List(int categoryId = 1, int page = 1, int pageSize = 5)
+        public async Task<IActionResult> List(int categoryId = 1, int page = 1, int pageSize = 5
+        ,string sortType = "asc", string sortBy = "-CreationTime")
         {
             var clist = CategoryService.categories();
             if (clist.Count == 0) return View(new BlogListViewModel()
@@ -84,11 +85,14 @@ namespace Personalblog.Controllers
                 CurrentCategoryId = categoryId,
                 Categories = clist,
                 CategoryNodes = _categoryService1.GetNodes(),
+                SortType = sortType,
+                SortBy = sortBy,
                 Posts = ArticelsService.GetPagedList(new QueryParameters
                 {
                     Page = page,
                     PageSize = pageSize,
                     CategoryId = categoryId,
+                    SortBy = sortType == "desc" ? $"-{sortBy}" : sortBy
                 })
             };
             return View(blogList);

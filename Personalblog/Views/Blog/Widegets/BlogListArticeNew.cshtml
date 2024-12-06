@@ -1,0 +1,33 @@
+﻿@using Personalblog.Model.Entitys
+@model Post
+
+<div class="mb-3">
+    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+        <div class="col-auto d-none d-lg-block text-center p-3">
+            <img class="bd-placeholder-img" alt="@Model.Title"
+                 src="@Url.Action("GetRandomImage", "PicLib", new { Seed = Model.Id, Width = 250, Height = 160 })">
+        </div>
+        <div class="col p-4 d-flex flex-column position-static">
+            <a class="mb-1 text-info" asp-controller="Blog" asp-action="Post" asp-route-id="@Model.Id">
+                <h5 class="card-title">@Model.Title</h5>
+            </a>
+            <small class="card-text text-muted mb-auto">@Model.Summary</small>
+            <div class="d-flex justify-content-between mt-3">
+                <div>
+                    <span class="text-muted me-3">
+                        <i class="fa-regular fa-clock"></i>
+                        @Model.CreationTime.ToString("yyyy-MM-dd")
+                    </span>
+                    <span class="text-muted">
+                        <i class="fa-solid fa-fire-flame-curved"></i> @Model.ViewCount
+                    </span>
+                </div>
+                @if (Model.Categories != null) {
+                    <a asp-controller="Blog" asp-action="List" asp-route-categoryId="@Model.Categories.Id" class="text-primary">
+                        <strong>@Model.Categories.Name</strong>
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

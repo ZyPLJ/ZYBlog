@@ -40,11 +40,10 @@ namespace Personalblog.Apis
                     image.Height - textSize.Height - 10 // 10 为下边距
                 );
                 image.Mutate(ctx => ctx.DrawText("ZY blog", font, new Rgba32(255, 255, 255, 128), location));
-                
                 await image.SaveAsync(stream, encoder);
                 try
                 {
-                    return new FileContentResult(stream.ToArray(), "image/jpeg");
+                    return new FileContentResult(stream.ToArray(), "image/webp");
                 }
                 finally
                 {

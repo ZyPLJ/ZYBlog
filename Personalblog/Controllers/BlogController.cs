@@ -119,7 +119,7 @@ namespace Personalblog.Controllers
                 var codeBlockTheme = _configuration.GetSection("CodeBlockTheme").GetValue<string>("Theme");
                 if (codeBlockTheme == "rear-end")
                 {
-                    return View("PostFour",await ArticelsService.GetPostViewModel(post));
+                    return View("PostNew",await ArticelsService.GetPostViewModel(post));
                 }
                 return View("Post",await ArticelsService.GetPostViewModel(post));
             }

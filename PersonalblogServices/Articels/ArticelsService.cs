@@ -157,7 +157,7 @@ namespace PersonalblogServices.Articels
                 .FirstOrDefaultAsync();
             var firstPost = await posts
                 .OrderByDescending(p => p.CreationTime)
-                .FirstOrDefaultAsync(p => p.CreationTime < lastpost.CreationTime);
+                .FirstOrDefaultAsync(p => lastpost != null && p.CreationTime < lastpost.CreationTime);
             return new HomePost()
             {
                 CommentMax = CommentMax,

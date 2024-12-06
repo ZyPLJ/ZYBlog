@@ -10,4 +10,6 @@ public class InitViewModel
     public string Password { get; set; }
     [Display(Name = "博客域名")]
     public string Host { get; set; }
+    [Display(Name = "博客目录")]
+    public string Dir { get; set; }
 }

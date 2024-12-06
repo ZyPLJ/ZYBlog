@@ -10,13 +10,15 @@ namespace Personalblog.Migrate
 {
     public class CreateMd
     {
-        public void C(MyDbContext myDbContext)
+        //md文件存放的路径
+        private string importDir = @"D:\md\";
+        public void C(MyDbContext myDbContext,string path,string dir)
         {
+            if (!string.IsNullOrEmpty(dir))
+                importDir = dir;
             var exclusionDirs = new List<string> { ".git", "logseq", "pages" };
-            var assetsPath = Path.GetFullPath("../../../.net6/Personalblog/Personalblog/wwwroot/media/blog");
-            //md文件存放的路径
-            const string importDir = @"D:\md";
-
+              var assetsPath = Path.GetFullPath(path); 
+            
             //数据导入
             WalkDirectoryTree(new DirectoryInfo(importDir));
 
@@ -44,7 +46,7 @@ namespace Personalblog.Migrate
                     foreach (FileInfo file in files)
                     {
                         Console.WriteLine(file.FullName);
-                        var postPath = file.DirectoryName!.Replace(importDir, "");
+                        var postPath = file.FullName!.Replace(importDir, "");
                         Console.WriteLine(postPath);
                         /*
                          * 这里获取了md文件夹下面的文件名
@@ -62,7 +64,7 @@ namespace Personalblog.Migrate
                              *id为1的话就是.net类别
                              *2就是其他
                              */
-                            Category category = database.Select(categoryNames[1]);
+                            Category category = database.Select(categoryNames[0]);
 
                             //这里是读取文件了
                             var render = file.OpenText();
@@ -89,7 +91,7 @@ namespace Personalblog.Migrate
                                 Categories = category
                             };
 
-                            var processor = new PostProcessor(importDir, assetsPath, post);
+                            var processor = new PostProcessorInit(importDir, assetsPath, post);
                             //处理文章图片和内容
                             post.Content = processor.MarkdownParse();
                             //提取前200个字

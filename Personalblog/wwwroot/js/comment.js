@@ -202,7 +202,7 @@ const apptwo = Vue.createApp({
             ruleFormRef,
             handleReply,
             ReplyEmail,
-            SendReplyEmai
+            SendReplyEmail
             // 其他方法
         };
     }

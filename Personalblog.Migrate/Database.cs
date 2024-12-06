@@ -27,10 +27,10 @@ namespace Personalblog.Migrate
         /// <param name="categoryNames"></param>
         public void InsertC(List<Category> categories, string[] categoryNames)
         {
-            var rootCategory = _myDbContext.categories.FirstOrDefault((a => a.Name == categoryNames[1]));
+            var rootCategory = _myDbContext.categories.FirstOrDefault((a => a.Name == categoryNames[0]));
             if(rootCategory == null)
             {
-                _myDbContext.Entry<Category>(new Category { Name = categoryNames[1]}).State = EntityState.Added;
+                _myDbContext.Entry<Category>(new Category { Name = categoryNames[0]}).State = EntityState.Added;
                 int result = _myDbContext.SaveChanges();
                 if (result > 0)
                 {

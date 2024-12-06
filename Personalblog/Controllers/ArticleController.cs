@@ -14,12 +14,14 @@ namespace Personalblog.Controllers
         private readonly MyDbContext _myDbContext;
         private readonly PhotoService _photoService;
         private readonly Messages _messages;
+        private readonly IWebHostEnvironment _webHostEnvironment;
         public ArticleController(MyDbContext myDbContext, PhotoService photoService,
-            Messages messages)
+            Messages messages, IWebHostEnvironment webHostEnvironment)
         {
             _myDbContext = myDbContext;
             _photoService = photoService;
             _messages = messages;
+            _webHostEnvironment = webHostEnvironment;
         }
         
         public IActionResult Init()
@@ -36,6 +38,21 @@ namespace Personalblog.Controllers
             }
             
             if (!ModelState.IsValid) return View();
+            
+            try
+            {
+                if (!string.IsNullOrEmpty(vm.Dir))
+                {
+                    CreateMd createMd = new CreateMd();
+                    string path = _webHostEnvironment.WebRootPath + "/media/blog";
+                    createMd.C(_myDbContext, path, vm.Dir);
+                }
+            }
+            catch (Exception e)
+            {
+                _messages.Error(e.Message);
+                return View();
+            }
             
             //保存信息
             //todo 这里暂时存储明文密码，后期要换成MD5加密存储
@@ -65,6 +82,14 @@ namespace Personalblog.Controllers
         public IActionResult Chart()
         {
             return View();
+        }
+        [HttpGet]
+        public IActionResult InitPost()
+        {
+             CreateMd createMd = new CreateMd();
+            string path = _webHostEnvironment.WebRootPath + "/media/blog";
+            createMd.C(_myDbContext,path,"");
+            return RedirectToAction("Index","Home");
         }
     }
 }

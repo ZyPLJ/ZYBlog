@@ -37,6 +37,11 @@
                     <input asp-for="Host" class="form-control" aria-describedby="hostHelp">
                     <div class="form-text">设置链接前缀，之后可以在管理后台修改</div>
                 </div>
+                <div class="mb-3">
+                    <label asp-for="Dir" class="form-label"></label>
+                    <input asp-for="Dir" class="form-control" aria-describedby="hostHelp" placeholder="选填，可以直接在管理后台打包上传文章">
+                    <div class="form-text">初始化博客文章，列如：D:\md\, 注意结尾要带斜杠</div>
+                </div>
             </div>
 
             <div class="form-group">

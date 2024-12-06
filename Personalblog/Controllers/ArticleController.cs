@@ -74,11 +74,6 @@ namespace Personalblog.Controllers
             _messages.Success("初始化完成！");
             return RedirectToAction("Index","Home");
         }
-        public List<Photo> BatchImport()
-        {
-             var result =  _photoService.Import();
-            return result;
-        }
         public IActionResult Chart()
         {
             return View();

@@ -72,7 +72,9 @@ namespace Personalblog.Services
         async Task<(Image,IImageFormat)> GenerateSizedImageAsync(string imagePath,int width,int height)
         {
             using var fileStream = new FileStream(imagePath, FileMode.Open);
-            var (image, format) = await Image.LoadWithFormatAsync(fileStream);
+            var image = await Image.LoadAsync(fileStream);
+            // 检测格式
+            var format = await Image.DetectFormatAsync(fileStream);
 
             //尺寸超出原图片尺寸，放大
             if (width > image.Width && height > image.Height)
@@ -110,7 +112,9 @@ namespace Personalblog.Services
         async Task<(Image, IImageFormat)> GenerateSizedImageAsyncOd(string imagePath)
         {
             using var fileStream = new FileStream(imagePath, FileMode.Open);
-            var (image, format) = await Image.LoadWithFormatAsync(fileStream);
+            var image = await Image.LoadAsync(fileStream);
+            // 检测格式
+            var format = await Image.DetectFormatAsync(fileStream);
             return (image, format);
         }
         /// <summary>

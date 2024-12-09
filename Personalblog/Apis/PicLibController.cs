@@ -26,7 +26,7 @@ namespace Personalblog.Apis
         }
         private static async Task<IActionResult> GenerateImageResponse(Image image, IImageFormat format)
         {
-            var encoder = image.GetConfiguration().ImageFormatsManager.FindEncoder(format);
+            var encoder = image.Configuration.ImageFormatsManager.GetEncoder(format);
             using (var stream = new MemoryStream())
             {
                 //windows字体 Arial

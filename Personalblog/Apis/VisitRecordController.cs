@@ -51,5 +51,20 @@ namespace Personalblog.Apis
             var (data, meta) = await _service.GetPagedList(param);
             return new ApiResponsePaged<VisitRecord>(data, meta);
         }
+        /// <summary>
+        /// 新总览数据
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("[action]")]
+        public async Task<ApiResponse> OverviewNewAsync()
+        {
+            return ApiResponse.Ok(await _service.GetVisitRecoredNew());
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ApiResponse> ChatDateAsync()
+        {
+            return ApiResponse.Ok(await _service.GetChatDate());
+        }
     }
 }

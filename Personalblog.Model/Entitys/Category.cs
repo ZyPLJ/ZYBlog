@@ -32,5 +32,7 @@ namespace Personalblog.Model.Entitys
         /// 分类是否可见
         /// </summary>
         public bool Visible { get; set; } = true;
+
+        public FeaturedCategory? FeaturedCategory { get; set; }
     }
 }

@@ -42,5 +42,20 @@ namespace Personalblog.Apis
             if (user == null) return ApiResponse.NotFound("找不到用户资料");
             return new ApiResponse<User>(user);
         }
+        /// <summary>
+        /// 登录
+        /// </summary>
+        /// <param name="Name"></param>
+        /// <param name="Password"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ApiResponse LoginNew([FromBody] LoginUser loginUser)
+        {
+            var users = _authService.GetUserByName(loginUser.Username);
+            if (users == null) return ApiResponse.Unauthorized("用户名不存在！");
+            if (loginUser.Password != users.Password) return ApiResponse.Unauthorized("密码错误！");
+            var data = _authService.GenerateLoginToken(users);
+            return ApiResponse.Ok(new { accessToken = data.Token, expires = data.Expiration });
+        }
     }
 }

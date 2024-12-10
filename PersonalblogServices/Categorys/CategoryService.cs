@@ -68,7 +68,7 @@ namespace PersonalblogServices.Categorys
 
         public List<Category> GetAll()
         {
-            return _myDbContext.categories.ToList();
+            return _myDbContext.categories.Include(f => f.FeaturedCategory).ToList();
         }
 
         public int SetVisibility(Category category, bool isVisible)

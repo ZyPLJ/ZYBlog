@@ -71,8 +71,9 @@ namespace Personalblog.Services
         /// <returns></returns>
         async Task<(Image,IImageFormat)> GenerateSizedImageAsync(string imagePath,int width,int height)
         {
-            using var fileStream = new FileStream(imagePath, FileMode.Open);
+            await using var fileStream = new FileStream(imagePath, FileMode.Open, FileAccess.Read, FileShare.Read);
             var image = await Image.LoadAsync(fileStream);
+            fileStream.Position = 0; // 重置文件流位置
             // 检测格式
             var format = await Image.DetectFormatAsync(fileStream);
 
@@ -102,17 +103,18 @@ namespace Personalblog.Services
 
 
 
-            var cropRect = new Rectangle((image.Width - cropWidth) / 2, (image.Height - cropHeight) / 2, cropWidth, cropHeight);
+            var cropRect = new Rectangle((image.Width - cropWidth) / 2, (image.Height - cropHeight) / 2, cropWidth,
+                cropHeight);
             image.Mutate(a => a.Crop(cropRect));
             image.Mutate(a => a.Resize(width, height));
             return (image, format);
-
         }
 
         async Task<(Image, IImageFormat)> GenerateSizedImageAsyncOd(string imagePath)
         {
-            using var fileStream = new FileStream(imagePath, FileMode.Open);
+            await using var fileStream = new FileStream(imagePath, FileMode.Open);
             var image = await Image.LoadAsync(fileStream);
+            fileStream.Position = 0;   // 重置文件流位置
             // 检测格式
             var format = await Image.DetectFormatAsync(fileStream);
             return (image, format);

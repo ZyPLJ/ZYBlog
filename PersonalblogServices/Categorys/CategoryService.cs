@@ -151,5 +151,28 @@ namespace PersonalblogServices.Categorys
             await _myDbContext.SaveChangesAsync();
             return category;
         }
+
+        public async Task<(List<Category>,PaginationMetadata)> GetPageCategoriesAsync(QueryParameters @param)
+        {
+            var query = _myDbContext.categories.AsQueryable();
+            if (!string.IsNullOrEmpty(param.Search))
+            {
+                query = query.Where(c => c.Name.Contains(param.Search));
+            }
+
+            var data = await query
+                .Include(f => f.FeaturedCategory)
+                .Skip((param.Page - 1) * param.PageSize)
+                .Take(param.PageSize)
+                .ToListAsync();
+            
+            var pagination = new PaginationMetadata()
+            {
+                PageNumber = param.Page,
+                PageSize = param.PageSize,
+                TotalItemCount = await query.CountAsync()
+            };
+            return (data, pagination);
+        }
     }
 }

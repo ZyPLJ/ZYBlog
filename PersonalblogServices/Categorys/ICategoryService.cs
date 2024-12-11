@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Personalblog.Model.ViewModels;
 
 namespace PersonalblogServices.Categorys
 {
@@ -35,5 +36,6 @@ namespace PersonalblogServices.Categorys
         Task<int> DeleteAsync(Category category);
         //修改分类
         Task<Category> Update(Category category);
+        Task<(List<Category>,PaginationMetadata)> GetPageCategoriesAsync(QueryParameters @params);
     }
 }

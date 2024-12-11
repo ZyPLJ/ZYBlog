@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Personalblog.Model.Entitys;
+using Personalblog.Model.ViewModels;
 using Personalblog.Model.ViewModels.Categories;
 using PersonalblogServices.Categorys;
 using PersonalblogServices.Response;
@@ -46,6 +47,13 @@ namespace Personalblog.Apis
         public ApiResponse<List<Category>> GetAll()
         {
             return new ApiResponse<List<Category>>(_categoryService.GetAll());
+        }
+        [AllowAnonymous]
+        [HttpGet("GetPageCategories")]
+        public async Task<ApiResponse<List<Category>>> GetPageCategoriesAsync([FromQuery] QueryParameters @params)
+        {
+            var (data, meta) = await _categoryService.GetPageCategoriesAsync(@params);
+            return new ApiResponsePaged<Category>(data, meta);
         }
         /// <summary>
         /// 设置分类可见

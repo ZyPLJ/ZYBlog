@@ -159,7 +159,7 @@ namespace Personalblog.Services
                 .Select(i => startOfWeek.AddDays(i).Date) // 根据 startOfWeek 生成这一周的日期
                 .Select(date => thisWeekVisits.FirstOrDefault(v => v.Date == date)?.Count ?? 0) // 根据日期查找访问数量，找不到则为0
                 .ToList();
-
+            
             // 查询上周的访问数量
             var lastWeekVisits = await _myDbContext.visitRecords
                 .Where(v => v.Time >= startOfLastWeek && v.Time < startOfLastWeek.AddDays(7))
@@ -179,11 +179,11 @@ namespace Personalblog.Services
             {
                 new
                 {
-                    requireData = thisWeekVisitsData
+                    requireData = lastWeekVisitsData
                 },
                 new
                 {
-                    requireData = lastWeekVisitsData
+                    requireData = thisWeekVisitsData
                 }
             };
 

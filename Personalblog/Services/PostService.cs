@@ -268,6 +268,8 @@ namespace Personalblog.Services
             var savePath = Path.Combine(_environment.WebRootPath, fileRelativePath);
             // 生成临时文件名
             var tempFilename = $"{GuidUtils.GuidTo16String()}{Path.GetExtension(filename)}";
+            if(!Directory.Exists(Path.Combine(_environment.WebRootPath, "temp")))
+                Directory.CreateDirectory(Path.Combine(_environment.WebRootPath, "temp"));
             var tempPath = Path.Combine(_environment.WebRootPath, "temp", tempFilename);
 
             using (var fs = new FileStream(tempPath, FileMode.Create))

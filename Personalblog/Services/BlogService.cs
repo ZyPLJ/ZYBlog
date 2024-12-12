@@ -63,9 +63,10 @@ namespace Personalblog.Services
         }
         public int DeleteFeaturedPost(Post post)
         {
-            var item = _myDbContext.featuredPosts.Where(a => a.PostId == post.Id).First();
+            var item = _myDbContext.featuredPosts.Where(a => a.PostId == post.Id).FirstOrDefault();
+            if (item == null) return 0;
             _myDbContext.Remove(item);
-            return item == null ? 0 : _myDbContext.SaveChanges();
+            return _myDbContext.SaveChanges();
         }
         /// <summary>
         /// 设置置顶博客

@@ -14,7 +14,7 @@ namespace PersonalblogServices.FPost
     {
         Task<IPagedList<Post>> GetFeaturedPostsAsync(QueryParameters param);
         FeaturedPost GetFeatures(int id);
-        Task<List<FeaturedPost>> GetListAsync();
+        Task<(List<FeaturedPost>,PaginationMetadata)> GetListAsync(QueryParameters param);
         int Delete(FeaturedPost featured);
         //排序
         Task<bool> UpdateSortOrderAsync(int featuredPostId, int newSortOrder);

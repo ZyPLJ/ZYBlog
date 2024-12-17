@@ -84,9 +84,23 @@ namespace PersonalblogServices.FPost
                 .Include(a => a.Post).First();
         }
 
-        public async Task<List<FeaturedPost>> GetListAsync()
+        public async Task<(List<FeaturedPost>,PaginationMetadata)> GetListAsync(QueryParameters param)
         {
-            return await _myDbContext.featuredPosts.Include(a => a.Post.Categories).OrderBy(o => o.SortOrder).ToListAsync();
+            var query = _myDbContext.featuredPosts.AsQueryable();
+            var data = await query
+                .Include(a => a.Post.Categories)
+                .OrderBy(o => o.SortOrder)
+                .Skip((param.Page - 1) * param.PageSize)
+                .Take(param.PageSize)
+                .ToListAsync();
+            
+            var pagination = new PaginationMetadata()
+            {
+                PageNumber = param.Page,
+                PageSize = param.PageSize,
+                TotalItemCount = await query.CountAsync()
+            };
+            return (data, pagination);
         }
     }
 }

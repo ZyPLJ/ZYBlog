@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Personalblog.Model.Entitys;
+using Personalblog.Model.ViewModels;
 using PersonalblogServices.FPost;
 using PersonalblogServices.Response;
 
@@ -20,9 +21,10 @@ namespace Personalblog.Apis
             _fpostService = fpostService;
         }
         [HttpGet]
-        public async Task<ApiResponse<List<FeaturedPost>>> GetList()
+        public async Task<ApiResponsePaged<FeaturedPost>> GetList([FromQuery] QueryParameters @params)
         {
-            return new ApiResponse<List<FeaturedPost>>(await _fpostService.GetListAsync());
+            var (data, meta) = await _fpostService.GetListAsync(@params);
+            return new ApiResponsePaged<FeaturedPost>(data, meta);
         }
 
         [HttpGet("{id:int}")]

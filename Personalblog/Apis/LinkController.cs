@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Personalblog.Model.Entitys;
+using Personalblog.Model.ViewModels;
 using Personalblog.Model.ViewModels.Links;
 using PersonalblogServices.Links;
 using PersonalblogServices.Response;
@@ -28,6 +29,12 @@ public class LinkController : ControllerBase
     [HttpGet]
     public async Task<List<Link>> GetAll() {
         return await _linkService.GetAll(false);
+    }
+    [HttpPost("GetPagedList")]
+    public async Task<ApiResponsePaged<Link>> GetPagedList([FromQuery] QueryParameters @params)
+    {
+        var (data, meta) = await _linkService.GetPagedList(@params);
+        return new ApiResponsePaged<Link>(data, meta);
     }
 
     [HttpGet("{id:int}")]

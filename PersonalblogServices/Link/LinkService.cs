@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Personalblog.Model.ViewModels;
+using Personalblog.Model.ViewModels.Categories;
 
 namespace PersonalblogServices.Links
 {
@@ -78,6 +80,29 @@ namespace PersonalblogServices.Links
                 return await _myDbContext.SaveChangesAsync();
             }
             return 0;
+        }
+
+        public async Task<(List<Link>, PaginationMetadata)> GetPagedList(QueryParameters param)
+        {
+            var query = _myDbContext.links.AsQueryable();
+
+            if (param.Search != null)
+            {
+                query = query.Where(a => a.Name.Contains(param.Search));
+            }
+            
+            var data = await query
+                .Skip((param.Page - 1) * param.PageSize)
+                .Take(param.PageSize)
+                .ToListAsync();
+            
+            var pagination = new PaginationMetadata()
+            {
+                PageNumber = param.Page,
+                PageSize = param.PageSize,
+                TotalItemCount = await query.CountAsync()
+            };
+            return (data, pagination);
         }
     }
 }

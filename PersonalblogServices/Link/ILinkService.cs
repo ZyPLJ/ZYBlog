@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Personalblog.Model.ViewModels;
+using Personalblog.Model.ViewModels.Categories;
 
 namespace PersonalblogServices.Links
 {
@@ -16,5 +18,6 @@ namespace PersonalblogServices.Links
         Task<Link> AddOrUpdate(Link item);
         Task<Link?> SetVisibility(int id, bool visible);
         Task<int> DeleteById(int id);
+        Task<(List<Link>, PaginationMetadata)> GetPagedList(QueryParameters @params);
     }
 }

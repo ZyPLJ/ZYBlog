@@ -4,6 +4,8 @@ using Personalblog.Extensions.SendEmail;
 using Personalblog.Extensions.SendEmail.Services;
 using Personalblog.Model;
 using Personalblog.Model.Entitys;
+using Personalblog.Model.ViewModels;
+using Personalblog.Model.ViewModels.Categories;
 
 namespace PersonalblogServices.Links;
 
@@ -138,5 +140,26 @@ public class LinkExchangeService:ILinkExchangeService
                 Content = "很抱歉，友链申请未通过！建议您查看补充信息，调整后再次进行申请，感谢您的理解与支持~",
                 Data = item
             });
+    }
+
+    public async Task<(List<LinkExchange>, PaginationMetadata)> GetPagedList(QueryParameters param)
+    {
+        var querySet = _myDbContext.LinkExchanges.AsQueryable();
+        if (!string.IsNullOrEmpty(param.Search))
+        {
+            querySet = querySet.Where(a => a.Name.Contains(param.Search));
+        }
+        var data = await querySet
+            .Skip((param.Page - 1) * param.PageSize)
+            .Take(param.PageSize)
+            .ToListAsync();
+
+        var pagination = new PaginationMetadata()
+        {
+            PageNumber = param.Page,
+            PageSize = param.PageSize,
+            TotalItemCount = await querySet.CountAsync()
+        };
+        return (data, pagination);
     }
 }

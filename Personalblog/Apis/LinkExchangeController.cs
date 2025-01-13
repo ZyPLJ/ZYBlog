@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Personalblog.Model.Entitys;
+using Personalblog.Model.ViewModels;
 using Personalblog.Model.ViewModels.LinkExchange;
 using PersonalblogServices.Links;
 using PersonalblogServices.Response;
@@ -32,6 +33,11 @@ public class LinkExchangeController : ControllerBase
     public async Task<ApiResponse<LinkExchange>> Get(int id) {
         var item = await _linkExchangeService.GetById(id);
         return item == null ? ApiResponse.NotFound() : new ApiResponse<LinkExchange>(item);
+    }
+    [HttpPost("GetPagedList")]
+    public async Task<ApiResponsePaged<LinkExchange>> GetPagedList([FromQuery] QueryParameters @params) {
+        var (data, meta) = await _linkExchangeService.GetPagedList(@params);
+        return new ApiResponsePaged<LinkExchange>(data, meta);
     }
     [HttpPost("{id:int}/[action]")]
     public async Task<ApiResponse> Accept(int id, [FromBody] LinkExchangeVerityDto dto) {

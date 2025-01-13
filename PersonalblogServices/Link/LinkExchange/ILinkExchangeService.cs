@@ -1,4 +1,6 @@
 ﻿using Personalblog.Model.Entitys;
+using Personalblog.Model.ViewModels;
+using Personalblog.Model.ViewModels.Categories;
 
 namespace PersonalblogServices.Links;
 
@@ -15,4 +17,5 @@ public interface ILinkExchangeService
     Task SendEmailOnAdd(LinkExchange item);
     Task SendEmailOnAccept(LinkExchange item);
     Task SendEmailOnReject(LinkExchange item);
+    Task<(List<LinkExchange>, PaginationMetadata)> GetPagedList(QueryParameters @params);
 }

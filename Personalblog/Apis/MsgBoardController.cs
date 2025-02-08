@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Personalblog.Model.Entitys;
+using Personalblog.Model.ViewModels.MessageBoard;
 using Personalblog.Model.ViewModels.QueryFilters;
 using PersonalblogServices.Messages;
 using PersonalblogServices.Response;
@@ -30,6 +31,13 @@ public class MsgBoardController : ControllerBase
     {
         var pageList = _messagesService.GetAllReply(param);
         return new ApiResponsePaged<Replies>(pageList);
+    }
+    [HttpGet]
+    [Route("[action]")]
+    public async Task<ApiResponsePaged<MessageBoardList>> GetPageList([FromQuery] MsgBoardQueryParameter param)
+    {
+        var (data, meta)  = await _messagesService.GetPageList(param);
+        return new ApiResponsePaged<MessageBoardList>(data, meta);
     }
     [Authorize]
     [HttpDelete("{id:int}")]

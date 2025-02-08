@@ -6,6 +6,9 @@ using Personalblog.Migrate;
 using Personalblog.Model;
 using Personalblog.Model.Entitys;
 using Personalblog.Model.ViewModels;
+using Personalblog.Model.ViewModels.Categories;
+using Personalblog.Model.ViewModels.MessageBoard;
+using Personalblog.Model.ViewModels.QueryFilters;
 using PersonalblogServices.Response;
 using Msg = Personalblog.Model.Entitys.Messages;
 using X.PagedList;
@@ -120,5 +123,56 @@ public class MessagesService:IMessagesService
         var template = new MessageBoardNotificationEmailTemplate();
         await emailService.SendEmail(email, template,
             new EmailContent() { Content = content });
+    }
+
+    public async Task<(List<MessageBoardList>, PaginationMetadata)> GetPageList(MsgBoardQueryParameter param)
+    {
+        // 获取所有留言以及回复，并将其展平  
+        var messages = _myDbContext.Messages  
+            .Include(m => m.Replies)  
+            .Select(m => new MessageBoardList  
+            {  
+                Id = m.Id,  
+                Name = m.Name,  
+                Email = m.Email,  
+                Message = m.Message,  
+                CreatedAt = m.created_at,  
+                ReplyToName = null, // 留言的回复人为空  
+                IsReply = false // 标识为留言  
+            })  
+            .ToList();  
+
+        var replies = _myDbContext.Replies  
+            .Select(r => new MessageBoardList  
+            {  
+                Id = r.Id,  
+                Name = r.Name,  
+                Email = r.Email,  
+                Message = r.Reply,  
+                CreatedAt = r.created_at,  
+                ReplyToName = r.Name, // 回复的回复人是回复者的名称  
+                IsReply = true // 标识为回复  
+            })  
+            .ToList();  
+
+        // 将留言和回复合并  
+        var result = messages
+            .Concat(replies)
+            .OrderBy(x => x.CreatedAt)
+            .ThenBy(m => m.IsReply) // 留言在前，回复在后
+            .ToList();
+        
+        var data = await result
+            .Skip((param.Page - 1) * param.PageSize)
+            .Take(param.PageSize)
+            .ToListAsync();
+
+        var pagination = new PaginationMetadata()
+        {
+            PageNumber = param.Page,
+            PageSize = param.PageSize,
+            TotalItemCount = result.Count
+        };
+        return (data, pagination);
     }
 }

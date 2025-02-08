@@ -1,5 +1,8 @@
 ﻿using Personalblog.Model.Entitys;
 using Personalblog.Model.ViewModels;
+using Personalblog.Model.ViewModels.Categories;
+using Personalblog.Model.ViewModels.MessageBoard;
+using Personalblog.Model.ViewModels.QueryFilters;
 using PersonalblogServices.Response;
 using X.PagedList;
 using msg = Personalblog.Model.Entitys.Messages;
@@ -26,5 +29,6 @@ public interface IMessagesService
     Task<ApiResponse> DelMessageReplyAsync(int id);
     //发送邮件
     Task SendEmailOnAdd(string email, string content);
-    
+
+    Task<(List<MessageBoardList>, PaginationMetadata)>GetPageList(MsgBoardQueryParameter msgBoardQueryParameter);
 }

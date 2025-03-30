@@ -10,6 +10,6 @@ namespace PersonalblogServices.FCategory
 {
     public interface IFCategoryService
     {
-        List<FeaturedCategory> GetFeaturedCategories();
+        Task<List<FeaturedCategory>> GetFeaturedCategoriesAsync();
     }
 }

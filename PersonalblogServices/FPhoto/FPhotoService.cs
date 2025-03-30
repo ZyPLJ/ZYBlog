@@ -17,15 +17,9 @@ namespace PersonalblogServices.FPhoto
             _myDbContext = myDbContext;
         }
 
-        public List<Photo> GetFeaturePhotos()
+        public Task<List<Photo>> GetFeaturePhotosAsync()
         {
-            var fp = _myDbContext.featuredPhotos.Include("Photo");
-            List<Photo> photos = new List<Photo>();
-            foreach (var p in fp)
-            {
-                photos.Add(p.Photo);
-            }
-            return photos;
+            return _myDbContext.featuredPhotos.Include("Photo").Select(x => x.Photo).ToListAsync();
         }
     }
 }

@@ -18,9 +18,9 @@ namespace PersonalblogServices.FCategory
             _myDbContext = myDbContext;
         }
 
-        public List<FeaturedCategory> GetFeaturedCategories()
+        public Task<List<FeaturedCategory>> GetFeaturedCategoriesAsync()
         {
-             return _myDbContext.featuredCategories.Include(f=>f.Category).ToList();
+             return _myDbContext.featuredCategories.Include(f=>f.Category).ToListAsync();
         }
     }
 }

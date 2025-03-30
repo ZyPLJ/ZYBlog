@@ -45,8 +45,8 @@ namespace Personalblog.Controllers
         {
             HomeViewModel homeView = new HomeViewModel()
             {
-                FeaturedPhotos = _fPhotoService.GetFeaturePhotos(),
-                FeaturedCategories = _fCategoryService.GetFeaturedCategories(),
+                FeaturedPhotos = await _fPhotoService.GetFeaturePhotosAsync(),
+                FeaturedCategories =await _fCategoryService.GetFeaturedCategoriesAsync(),
                 TopPost =await _TopPostService.GetTopOnePostAsync(),
                 FeaturedPosts = await _PostService.GetFeaturedPostsAsync(new QueryParameters
                 {
@@ -61,7 +61,6 @@ namespace Personalblog.Controllers
                     Page = 1,
                     PageSize = 6,
                 })
-                // MaxPost = await _articelsService.MaxPostAsync()
             };
             return View(homeView);
         }

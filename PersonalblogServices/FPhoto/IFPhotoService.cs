@@ -10,6 +10,6 @@ namespace PersonalblogServices.FPhoto
     public interface IFPhotoService
     {
         //查询推荐图片
-        List<Photo> GetFeaturePhotos();
+        Task<List<Photo>> GetFeaturePhotosAsync();
     }
 }

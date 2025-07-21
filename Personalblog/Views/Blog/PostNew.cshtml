@@ -86,6 +86,13 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
     <script>
         const nodes = '@Html.Raw(Model.TocNodesJson)'
+        fetch('/api/viewcount/increment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ postId: '@Model.Id' })
+        });
     </script>
     <script src="~/lib/Blog/BlogPost.js"></script>
 }

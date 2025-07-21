@@ -14,14 +14,11 @@ namespace Personalblog.Apis
     {
         private readonly PiCLibService _service;
         private readonly IConfiguration _configuration;
-        private readonly QiniuService _qiniuService;
         public static string FontFamily = "Arial";
-        public PicLibController(PiCLibService service,IConfiguration configuration,
-            QiniuService qiniuService)
+        public PicLibController(PiCLibService service,IConfiguration configuration)
         {
             _service = service;
             _configuration = configuration;
-            _qiniuService = qiniuService;
             FontFamily = _configuration.GetValue<string>("FontFamily");
         }
         private static async Task<IActionResult> GenerateImageResponse(Image image, IImageFormat format)

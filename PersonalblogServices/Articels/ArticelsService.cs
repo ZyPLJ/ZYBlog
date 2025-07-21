@@ -54,9 +54,9 @@ namespace PersonalblogServices.Articels
         public async Task<Post> GetArticels(string pid)
         {
             Post post =await _myDbContext.posts.Include("Categories").FirstAsync(p => p.Id == pid);
-            post.ViewCount++;
-            _myDbContext.posts.Update(post);
-            await _myDbContext.SaveChangesAsync();
+            // post.ViewCount++;
+            // _myDbContext.posts.Update(post);
+            // await _myDbContext.SaveChangesAsync();
             return post;
         }
 
@@ -173,6 +173,14 @@ namespace PersonalblogServices.Articels
                 FirstPost = firstPost,
                 LastPost = lastpost
             };
+        }
+
+        public async Task IncrementViewCount(string pid)
+        {
+            var post = await _myDbContext.posts.FirstAsync(p => p.Id == pid);
+            post.ViewCount++;
+            _myDbContext.posts.Update(post);
+            await _myDbContext.SaveChangesAsync();
         }
     }
 }

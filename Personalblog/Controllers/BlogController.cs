@@ -12,6 +12,7 @@ using PersonalblogServices.CommentService;
 using MimeKit;
 using Newtonsoft.Json;
 using Personalblog.Migrate;
+using Personalblog.Model.ViewModels.Blog;
 using PersonalblogServices.Response;
 using StackExchange.Profiling.Internal;
 using X.PagedList;
@@ -145,6 +146,13 @@ namespace Personalblog.Controllers
             _messages.Info($"随机推荐了文章 <b>{randPost.Title}</b> 给你~" +
                       $"<span class='ps-3'><a href=\"{Url.Action(nameof(RandomPost))}\">再来一次</a></span>");
             return RedirectToAction(nameof(Post), new { id = randPost.Id });
+        }
+        
+        [HttpPost("api/viewcount/increment")]
+        public async Task<IActionResult> IncrementViewCount([FromBody] ViewCountRequest request)
+        {
+            await ArticelsService.IncrementViewCount(request.postId);
+            return Ok();
         }
 
         #region 废弃评论

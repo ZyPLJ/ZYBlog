@@ -100,7 +100,6 @@ builder.Services.AddSingleton<CommonService>();
 builder.Services.AddSingleton<PiCLibService>();
 builder.Services.AddSingleton<CrawlService>();
 builder.Services.AddSingleton<TempFilterService>();
-builder.Services.AddSingleton<QiniuService>();
 
 
 builder.Services.Configure<SecuritySetting>(builder.Configuration.GetSection(nameof(SecuritySetting)));

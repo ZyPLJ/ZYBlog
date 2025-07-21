@@ -31,5 +31,7 @@ namespace PersonalblogServices.Articels
         Task SendEmailOnAdd(CommentSendEmailDto dto);
         //查询评论最多 阅读最多 最新和最旧 4篇文章
         Task<HomePost> HomePostAsync();
+        // 文章阅读量+1
+        Task IncrementViewCount(string pid);
     }
 }

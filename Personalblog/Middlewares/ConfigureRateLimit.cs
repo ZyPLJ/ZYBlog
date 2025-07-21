@@ -16,7 +16,6 @@ public static class ConfigureRateLimit
         });
         // 注册 Redis 连接服务
         var redisOptions = ConfigurationOptions.Parse(conf.GetConnectionString("Redis"));
-        redisOptions.Password = "zyplj1314999";
         services.AddSingleton<IConnectionMultiplexer>(provider =>
         {
             return ConnectionMultiplexer.Connect(redisOptions);
